@@ -33,12 +33,13 @@ export default class {
       .bills()
       .list()
       .then(snapshot => {
-        const bills = snapshot
+        const billsList = snapshot
           .map(doc => {
             try {
               return {
                 ...doc,
-                date: formatDate(doc.date),
+                //date: formatDate(doc.date),
+                date: doc.date,
                 status: formatStatus(doc.status)
               }
             } catch(e) {
@@ -52,9 +53,28 @@ export default class {
               }
             }
           })
-          console.log('length', bills.length)
-        return bills
+        console.log('length', billsList.length);
+        sortingByDateBills(billsList);
+        billsList.forEach(bill => {
+          bill.date = formatDate(bill.date)
+        })
+        return billsList;
       })
     }
   }
+}
+
+/**
+ * Trie la liste de bills par ordre décroissant de date
+ * @param parbillsList
+ */
+function sortingByDateBills(parbillsList) {
+
+  console.log(new Date("2001-01-01").getTime())
+  parbillsList.sort( (a, b) => {
+    let locDateA = new Date(a.date).getTime();
+    let locDateB = new Date(b.date).getTime()
+    return locDateB - locDateA;
+  })
+  return parbillsList;
 }
