@@ -146,7 +146,11 @@ export default class {
     }
 
     bills.forEach(bill => {
-      $(`#open-bill${bill.id}`).click((e) => this.handleEditTicket(e, bill, bills))
+      /** FIX pour qu'une note de frais puisse s'ouvrir sur le dashboard dans n'importe quelle liste
+       **/
+      /*$(`#open-bill${bill.id}`).click((e) => this.handleEditTicket(e, bill, bills))
+    })*/
+      $(`#status-bills-container${this.index} #open-bill${bill.id}`).click((e) => this.handleEditTicket(e, bill, bills))
     })
 
     return bills
