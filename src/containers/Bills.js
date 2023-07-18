@@ -20,11 +20,12 @@ export default class {
     this.onNavigate(ROUTES_PATH['NewBill'])
   }
 
-  handleClickIconEye = (icon) => {
+handleClickIconEye = (icon) => {
     const billUrl = icon.getAttribute("data-bill-url")
-    const imgWidth = Math.floor($('#modaleFile').width() * 0.5)
-    $('#modaleFile').find(".modal-body").html(`<div style='text-align: center;' class="bill-proof-container"><img width=${imgWidth} src=${billUrl} alt="Bill" /></div>`)
-    $('#modaleFile').modal('show')
+    const modaleFile = $('#modaleFile');
+    const imgWidth = Math.floor(modaleFile.width() * 0.5)
+    modaleFile.find(".modal-body").html(`<div style='text-align: center;' class="bill-proof-container"><img width=${imgWidth} src=${billUrl} alt="Bill" /></div>`)
+    if (typeof modaleFile.modal === 'function') modaleFile.modal('show')
   }
 
   getBills = () => {
@@ -54,27 +55,8 @@ export default class {
             }
           })
         console.log('length', billsList.length);
-        sortingByDateBills(billsList);
-        billsList.forEach(bill => {
-          bill.date = formatDate(bill.date)
-        })
         return billsList;
       })
     }
   }
-}
-
-/**
- * Trie la liste de bills par ordre décroissant de date
- * @param parbillsList
- */
-function sortingByDateBills(parbillsList) {
-
-  console.log(new Date("2001-01-01").getTime())
-  parbillsList.sort( (a, b) => {
-    let locDateA = new Date(a.date).getTime();
-    let locDateB = new Date(b.date).getTime()
-    return locDateB - locDateA;
-  })
-  return parbillsList;
 }
