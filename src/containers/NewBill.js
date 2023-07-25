@@ -22,7 +22,7 @@ export default class NewBill {
     const fileName = filePath[filePath.length-1]
     const formData = new FormData()
     const email = JSON.parse(localStorage.getItem("user")).email
-    let isValidFileName = validateFileExtension(file);
+    let isValidFileName = this.validateFileExtension(file);
     formData.append('file', file)
     formData.append('email', email)
 
@@ -76,30 +76,33 @@ export default class NewBill {
       .catch(error => console.error(error))
     }
   }
-}
+  /**
+   * Permet de valider les formats de fichiers autorisés. Si bon format return true, si mauvais format, clear ae l'input
+   * et message pour indiquer quels sont les fichiers autorisés
+   * @param parFile
+   * @returns {boolean}
+   */
+  validateFileExtension = (parFile) => {
+    let validateFileExtension = [".jpg", ".jpeg", ".png"];
 
-/**
- * Permet de valider les formats de fichiers autorisés. Si bon format return true, si mauvais format, clear ae l'input
- * et message pour indiquer quels sont les fichiers autorisés
- * @param parFile
- * @returns {boolean}
- */
-function validateFileExtension(parFile) {
-  let validateFileExtension = [".jpg", ".jpeg", ".png"];
-
-  let locFileName = parFile.name;
-  if(locFileName.length > 0) {
-    let isValid = false;
-    validateFileExtension.forEach(fileExtension => {
-      if(locFileName.substring(locFileName.length - fileExtension.length, fileExtension.length).toLowerCase() == fileExtension.toLowerCase()) {
-        isValid = true;
-      }
-    })
-    if(!isValid) {
-      alert("Désolée mais " + locFileName + " est invalide, les fichiers autorisés sont de type " + validateFileExtension.join(", "));
-      document.getElementById("input-file").value = "";
+    let locFileName = parFile.name;
+    if(locFileName === "") {
       return false;
     }
+    if(locFileName.length > 0) {
+      let isValid = false;
+      validateFileExtension.forEach(fileExtension => {
+        if(locFileName.substring(locFileName.length - fileExtension.length, locFileName.length).toLowerCase() == fileExtension.toLowerCase()) {
+          isValid = true;
+        }
+      })
+      if(!isValid) {
+        alert("Désolée mais " + locFileName + " est invalide, les fichiers autorisés sont de type " + validateFileExtension.join(", "));
+        document.getElementById("input-file").value = "";
+        return false;
+      }
+    }
+    return true;
   }
-  return true;
 }
+
