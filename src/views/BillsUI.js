@@ -89,13 +89,3 @@ export default ({ data: bills, loading, error }) => {
     </div>`
   )
 }
-function sortingByDateBills(parbillsList) {
-    const sortDescending = (a,b) => {
-        let locDateA = new Date(a.date).getTime();
-        let locDateB = new Date(b.date).getTime();
-        return locDateB - locDateA;
-    }
-    parbillsList.sort(sortDescending);
-
-    return parbillsList;
-}
