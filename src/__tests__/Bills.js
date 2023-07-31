@@ -38,10 +38,9 @@ describe("Given I am connected as an employee", () => {
     })
     test("Then bills should be ordered from earliest to latest", () => {
       document.body.innerHTML = BillsUI({ data: bills })
-      //const dates = screen.getAllByText(/^(19|20)\d\d[- /.](0[1-9]|1[012])[- /.](0[1-9]|[12][0-9]|3[01])$/i).map(a => a.innerHTML)
       const dates = screen.getAllByText(/^[0-9]{1,2}\s[a-z]{3}\.\s[0-9]{2}$/i).map(a => a.innerHTML)
-      const antiChrono = (a, b) => ((a < b) ? 1 : -1)
-      const datesSorted = [...dates].sort(antiChrono)
+      const descending = (a, b) => ((a < b) ? 1 : -1)
+      const datesSorted = [...dates].sort(descending)
       expect(dates).toEqual(datesSorted)
     })
 
@@ -91,7 +90,7 @@ describe("Given I am connected as an employee", () => {
         throw new TypeError('TestingLibraryElementError');
       }
 
-      it('should throw an error',  () => {
+      test('should throw an error',  () => {
         expect(seeIconEye).toThrow(TypeError);
         expect(seeIconEye).toThrow('TestingLibraryElementError');
       });
@@ -100,6 +99,7 @@ describe("Given I am connected as an employee", () => {
   /** TESTS INTEGRATIONS **/
 
   describe("When an error occurs on API", () => {
+    //initialisation avant les tests
     beforeEach(() => {
       jest.spyOn(mockStore, "bills")
       Object.defineProperty(
